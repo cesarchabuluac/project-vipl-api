@@ -11,4 +11,10 @@ class Banner extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded  = [];
+
+    protected $appends = ['image_path'];
+
+    public function getImagePathAttribute () {
+        return asset('banners') . "/" . $this->image;
+    }
 }

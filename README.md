@@ -1,61 +1,123 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## VIPL
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Aplicación web  + API (Usuarios mobiles y banners)
 
-## About Laravel
+### Pasos a seguir
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- composer install
+- composer du
+- npm install
+- npm run dev
+- php artisan migrate
+- php artisan db:seed
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+El seed carga los datos iniciales de la base de datos como la tabla usuarios y usuarios mobiles
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- La contraseña de la tabla usuario queda encriptado por default es 123456.
 
-## Learning Laravel
+- Se registro el usuario default al sistema 
+INSERT INTO `users` (`id`, `email`, `password`, `username`) VALUES
+(1, 'cctvsolucion@gmail.com', '123456', 'eduarladds');
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Se registro los usuarios mobiles:
+INSERT INTO `users_mobile` (`id`, `name`, `email`, `phone`, `date_of_birth`, `date_register`, `type_login`, `active`) VALUES
+(1, 'EDUARDO GONZALEZ C', 'eduardo@gmail.com', '+525511223344', '20/03/1990', '29/04/2022', 'email', 1),
+(2, 'JONH', 'john@gmail.com', '+52550011223344', '20/03/1980', '29/04/2022', 'email', 0),
+(3, 'JAMES THOMAS', 'thomas@gmail.com', '+525590087812', '20/03/1980', '29/04/2022', 'email', 0);
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+## API
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+- Con la sección de api se podra dar de alta a usuarios mobiles
 
-## Contributing
+### api/register
+- El agregar el json para crear nuevos usuarios
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+{
+    "name": "Cesar Chab",
+    "email": "admin2@demo.com",
+    "phone": "9995048783",
+    "date_of_birth": "27/01/1989",
+    "date_register": "03/05/2022",
+    "type_login": "email"
+}
 
-## Code of Conduct
+- El resultado de la petición sera de esta forma:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+{
+    "success": true,
+    "data": {
+        "name": "Cesar Chab",
+        "email": "admin2@demo.com",
+        "phone": "9995048783",
+        "date_of_birth": "27/01/1989",
+        "date_register": "03/05/2022",
+        "type_login": "email",
+        "active": 1,
+        "updated_at": "2022-05-04T04:24:05.000000Z",
+        "created_at": "2022-05-04T04:24:05.000000Z",
+        "id": 4
+    },
+    "message": "User saved successfully"
+}
 
-## Security Vulnerabilities
+## api/banners
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Con este endpoint se filtra de 10 en 10 de forma descendente obteniendo el banner más actual en el sistema. El resultado sera de esta forma:
+
+
+    {
+        "success": true,
+        "data": {
+            "current_page": 1,
+            "data": [
+                {
+                    "id": 1,
+                    "title": "Test",
+                    "description": "Hello world!",
+                    "image": "RJXv2ePenv.jpg",
+                    "deleted_at": null,
+                    "created_at": "2022-05-04T04:31:40.000000Z",
+                    "updated_at": "2022-05-04T04:31:40.000000Z",
+                    "image_path": "http://127.0.0.1:8000/banners/RJXv2ePenv.jpg"
+                }
+            ],
+            "first_page_url": "http://127.0.0.1:8000/api/banners?page=1",
+            "from": 1,
+            "last_page": 1,
+            "last_page_url": "http://127.0.0.1:8000/api/banners?page=1",
+            "links": [
+                {
+                    "url": null,
+                    "label": "&laquo; Previous",
+                    "active": false
+                },
+                {
+                    "url": "http://127.0.0.1:8000/api/banners?page=1",
+                    "label": "1",
+                    "active": true
+                },
+                {
+                    "url": null,
+                    "label": "Next &raquo;",
+                    "active": false
+                }
+            ],
+            "next_page_url": null,
+            "path": "http://127.0.0.1:8000/api/banners",
+            "per_page": 10,
+            "prev_page_url": null,
+            "to": 1,
+            "total": 1
+        },
+        "message": "Banners retrievied successfully"
+    }
+
+
+
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The Laravel framework is open-sourced software licensed under the **MIT license**.
